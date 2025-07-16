@@ -3,18 +3,55 @@ const app= express();
 const Joi= require('joi');
 const logger= require('./logger')
 const authenticate= require('./authenticate.js')
+const helmet= require('helmet');
+const morgan = require('morgan')
+const config= require('config');//configuration package/ module
+
+//debugging
+const debug = require('debug')('app:startup');
+
 app.use(express.json());
+
+app.use(express.urlencoded({extended:true}))
 
 app.use(logger);
 
 //middleware for Authentication
 app.use(authenticate )
+app.use(helmet());
+
+app.use(express.static('public'));
+
+// if(app.get('env')==='development'){
+//   app.use(morgan('tiny'))
+//   console.log('Morgan enabled...')
+// }
 
 const courses = [
   { id: 1, name: 'web Dev' },
   { id: 2, name: 'dsa' },
   { id: 3, name: 'singing' }
 ];
+
+console.log(`NODE_ENV is ${process.env.NODE_ENV}`);
+console.log(`NODE_ENV value with app.get('env') is ${app.get('env')}`);
+
+console.log('Application name', config.get('name'));
+console.log('Mail Server', config.get('mail.host'));
+
+//printing tthe env variable-
+console.log('Mail password', config.get('mail.password'));
+
+//debugging
+if(app.get('env')==='development'){
+  app.use(morgan('tiny'))
+  // console.log("Morgan is enabled for dev env ...")
+ debug('Morgan is enabledd...');
+}
+
+//db related work-
+// dbDebugger('Connected to the database...');
+
 
 //GET requests:
 app.get('/api/courses', (req, res) => {
