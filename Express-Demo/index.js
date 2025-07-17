@@ -53,6 +53,17 @@ if(app.get('env')==='development'){
 // dbDebugger('Connected to the database...');
 
 
+//templating engine
+app.set('view engine', 'pug');
+
+app.get('/', (req,res)=>{
+  res.render('index', {
+    title: "My express application",
+    message:"how do u do buddy?",
+    msg2: "This is a pug template"
+  })
+})
+
 //GET requests:
 app.get('/api/courses', (req, res) => {
     console.log("GET request received for courses");
