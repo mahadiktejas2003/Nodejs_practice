@@ -1,4 +1,6 @@
+const jwt= require('jsonwebtoken');
 const Joi = require('joi');
+const config = require('config');
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const {User} = require('../models/user');
@@ -22,8 +24,11 @@ router.post('/', async (req, res) => {
   const validPassword= await bcrypt.compare(req.body.password, user.password);
   if(!validPassword) return res.status(400).send('Invalid email or password');
 
+  //jwt:
+  const token =user.generateAuthToken();
+
     // If we reach here, it means the user exists and the password is valid.
-    res.send(true);
+    res.send(token);
 
   //at this point- 
 

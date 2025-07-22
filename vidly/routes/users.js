@@ -25,8 +25,9 @@ router.post('/', async (req, res) => {
     //save user to datbase.
   await user.save();
 
+  const token = user.generateAuthToken();
   // 5. Send response (will hide password in next step)
-  res.send(_.pick(user, ['_id','name','email']));
+  res.header('x-auth-token', token).send(_.pick(user, ['_id','name','email']));
 });
 
 module.exports = router;
