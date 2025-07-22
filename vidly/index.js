@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const config = require('config');
 // Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
 const genres = require('./routes/genres');
@@ -8,7 +9,12 @@ const movies = require('./routes/movies');
 const express = require('express');
 const users= require('./routes/users');
 const app = express();
-const auth = require('./routes/auth');
+const auth = require('./routes/auth')
+
+if(!config.get('jwtPrivateKey')) {
+  console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+  process.exit(1);
+}
 
 mongoose.connect('mongodb://localhost/vidly')
   .then(() => console.log('Connected to MongoDB...'))
