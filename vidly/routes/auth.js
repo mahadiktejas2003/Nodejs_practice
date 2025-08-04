@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
   const token =user.generateAuthToken();
 
     // If we reach here, it means the user exists and the password is valid.
-    res.send(token);
+  res.send(token);
 
   //at this point- 
 
